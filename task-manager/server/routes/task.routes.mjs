@@ -2,8 +2,8 @@ import express from "express";
 import {
   getAllTasks,
   createTask,
-  updateTask,
   deleteTask,
+  updateTask,
 } from "../controllers/task.controllers.mjs";
 
 const router = express.Router();

@@ -4,7 +4,7 @@ function TaskList({ tasks, onToggleComplete, onDeleteTask }) {
   }
 
   // {console.log(tasks.map((task) => task.id))}
-  {console.log(tasks)}
+  // {console.log(tasks)}
   return (
     <ul className="task-list">
       {tasks.map((task) => (

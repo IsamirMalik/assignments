@@ -15,8 +15,8 @@ body {
 }
 
 .app {
-  max-width: 800px;
-  margin: 2rem auto;
+  max-width: 60%;
+  margin: 4rem auto;
   padding: 2rem;
   background-color: #ffffff;
   border-radius: 12px;
@@ -103,21 +103,27 @@ button:disabled {
   opacity: 0.8;
   text-decoration: line-through;
 }
+.task-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 
 .task-main h3 {
   margin: 0 0 0.35rem;
 }
 
 .task-main p {
-  margin: 0;
+  margin: 0 0 0.35rem;
   font-size: 0.9rem;
   color: #4b5563;
 }
 
 .task-meta {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   gap: 0.35rem;
 }
 
@@ -153,4 +159,3 @@ button:disabled {
   color: #b91c1c;
   margin-bottom: 1rem;
 }
-

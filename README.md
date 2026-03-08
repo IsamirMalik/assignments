@@ -26,7 +26,7 @@ To run this project locally, follow these steps:
 
 ## Usage
 
-1. Open your browser and navigate to `http://localhost:3000` to access the client application.
+1. Open your browser and navigate to `http://localhost:5173` to access the client application.
 2. Create a new task by filling in the form and clicking the "Add Task" button.
 3. View a list of all tasks in the task list.
 4. Click on a task to edit its details or mark it as complete/incomplete.

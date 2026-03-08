@@ -30,7 +30,7 @@ function App() {
     };
 
     fetchTasks();
-  }, []);
+  }, [creating, error]);
 
   const handleAddTask = async ({ title, description, priority }) => {
     try {
@@ -50,7 +50,7 @@ function App() {
 
       const newTask = await response.json();
       console.log(newTask);
-      
+
       setTasks((previousTasks) => [...previousTasks, newTask]);
     } catch (error) {
       setError(error.message || "Something went wrong while creating task");
@@ -68,7 +68,12 @@ function App() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...task, completed: !task.completed }),
+        body: JSON.stringify({
+          completed: !task.completed,
+          priority: task.priority,
+          title: task.title,
+          description: task.description,
+        }),
       });
 
       console.log(response);
@@ -86,6 +91,12 @@ function App() {
     } catch (error) {
       setError(error.message || "Something went wrong while updating task");
     }
+
+    setTasks((previousTasks) =>
+      previousTasks.map((item) =>
+        item.id === task.id ? { ...item, completed: !item.completed } : item,
+      ),
+    );
   };
 
   const handleDeleteTask = async (taskId) => {

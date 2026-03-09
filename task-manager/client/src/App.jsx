@@ -13,7 +13,7 @@ function App() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
 
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://assignments-77xw.onrender.com";
   // console.log("rendering");
   const fetchTasks = async () => {
     try {

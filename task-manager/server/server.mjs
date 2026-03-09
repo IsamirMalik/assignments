@@ -1,10 +1,16 @@
 import express from "express";
 import taskRoutes from "./routes/task.routes.mjs";
+import cors from "cors";
 
 const app = express();
 const PORT = 8080;
 
 app.use(express.json());
+
+app.use(cors({
+  origin: "https://task-manager-seven-ruby-63.vercel.app",
+  Credentials: true
+}));
 
 app.get("/test", (req, res) => {
   res.send("Task Manager API is running and test endpoint is working");

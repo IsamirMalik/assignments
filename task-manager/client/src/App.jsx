@@ -3,6 +3,7 @@ import "./style.css";
 import TaskForm from "./Components/TaskForm.jsx";
 import TaskFilters from "./Components/TaskFilters.jsx";
 import TaskList from "./Components/TaskList.jsx";
+// import "dotenv/config";
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -12,10 +13,11 @@ function App() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
 
-  console.log("rendering");
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+  // console.log("rendering");
   const fetchTasks = async () => {
     try {
-      const response = await fetch("/api/v1/tasks");
+      const response = await fetch(`${BASE_URL}/api/v1/tasks`);
       if (!response.ok) {
         throw new Error("Failed to fetch tasks");
       }
@@ -36,7 +38,7 @@ function App() {
     try {
       setCreating(true);
       setError("");
-      const response = await fetch("/api/v1/tasks", {
+      const response = await fetch(`${BASE_URL}/api/v1/tasks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,7 +66,7 @@ function App() {
       setError("");
       // console.log(task);
       // Frontend: handleToggleComplete
-      const response = await fetch(`/api/v1/tasks/${task.id}`, {
+      const response = await fetch(`${BASE_URL}/api/v1/tasks/${task.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -80,7 +82,7 @@ function App() {
       }
       const data = await response.json();
       const updatedTask = data.task;
-      
+
       setTasks((previousTasks) =>
         previousTasks.map((item) =>
           item.id === updatedTask.id ? updatedTask : item,
@@ -94,7 +96,7 @@ function App() {
   const handleDeleteTask = async (taskId) => {
     try {
       setError("");
-      const response = await fetch(`/api/v1/tasks/${taskId}`, {
+      const response = await fetch(`${BASE_URL}/api/v1/tasks/${taskId}`, {
         method: "DELETE",
       });
 

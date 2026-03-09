@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://assignments-77xw.onrender.com",
+        target: "http://localhost:8080",
         changeOrigin: true,
       },
     },

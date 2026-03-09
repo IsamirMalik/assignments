@@ -12,25 +12,25 @@ function App() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const response = await fetch("/api/v1/tasks");
-        if (!response.ok) {
-          throw new Error("Failed to fetch tasks");
-        }
-        const data = await response.json();
-        const receivedTasks = Array.isArray(data) ? data : data.tasks || [];
-        setTasks(receivedTasks);
-      } catch (error) {
-        setError(error.message || "Something went wrong while fetching tasks");
-      } finally {
-        setLoading(false);
+  console.log("rendering");
+  const fetchTasks = async () => {
+    try {
+      const response = await fetch("/api/v1/tasks");
+      if (!response.ok) {
+        throw new Error("Failed to fetch tasks");
       }
-    };
-
+      const data = await response.json();
+      const receivedTasks = Array.isArray(data) ? data : data.tasks || [];
+      setTasks(receivedTasks);
+    } catch (error) {
+      setError(error.message || "Something went wrong while fetching tasks");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
     fetchTasks();
-  }, [creating, error]);
+  }, []);
 
   const handleAddTask = async ({ title, description, priority }) => {
     try {
@@ -63,16 +63,13 @@ function App() {
     try {
       setError("");
       // console.log(task);
+      // Frontend: handleToggleComplete
       const response = await fetch(`/api/v1/tasks/${task.id}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          completed: !task.completed,
-          priority: task.priority,
-          title: task.title,
-          description: task.description,
+          ...task, // Spread all properties
+          completed: !task.completed, // Flip the status HERE
         }),
       });
 
@@ -81,8 +78,9 @@ function App() {
       if (!response.ok) {
         throw new Error("Failed to update task");
       }
-
-      const updatedTask = await response.json();
+      const data = await response.json();
+      const updatedTask = data.task;
+      
       setTasks((previousTasks) =>
         previousTasks.map((item) =>
           item.id === updatedTask.id ? updatedTask : item,
@@ -91,12 +89,6 @@ function App() {
     } catch (error) {
       setError(error.message || "Something went wrong while updating task");
     }
-
-    setTasks((previousTasks) =>
-      previousTasks.map((item) =>
-        item.id === task.id ? { ...item, completed: !item.completed } : item,
-      ),
-    );
   };
 
   const handleDeleteTask = async (taskId) => {

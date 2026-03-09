@@ -3,7 +3,6 @@ function TaskList({ tasks, onToggleComplete, onDeleteTask }) {
     return <p className="empty-state">No tasks found.</p>;
   }
 
-  // {console.log(tasks.map((task) => task.id))}
   // {console.log(tasks)}
   return (
     <ul className="task-list">

@@ -10,49 +10,64 @@ export const getAllTasks = (req, res) => {
 };
 
 export const createTask = (req, res) => {
-  const { title, description, priority = "medium" } = req.body;
+  try {
+    const { title, description, priority = "medium" } = req.body;
 
-  if (!title || !description) {
-    return res
-      .status(400)
-      .json({ message: "Title and description are required" });
+    if (!title || !description) {
+      return res
+        .status(400)
+        .json({ message: "Title and description are required" });
+    }
+
+    const newTask = {
+      id: Date.now(),
+      title,
+      description,
+      completed: false,
+      priority,
+    };
+
+    tasks.push(newTask);
+    console.log(newTask);
+    res.status(201).json(newTask);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-
-  const newTask = {
-    id: Date.now(),
-    title,
-    description,
-    completed: false,
-    priority,
-  };
-
-  tasks.push(newTask);
-  console.log(newTask);
-  res.status(201).json(newTask);
 };
 
 export const updateTask = (req, res) => {
-  const { id } = req.params;
-  const { title, description, priority, completed } = req.body;
+  try {
+    const { id } = req.params;
+    const { title, description, priority, completed } = req.body;
 
-  let task = tasks.find((task) => task.id == Number(id));
+    let task = tasks.find((t) => t.id == Number(id));
 
-  // console.log(task);
-  // res.status(200).send(task);
-  if (!task) {
-    return res.status(404).json({ message: "Task not found" });
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    // Update fields if they exist in the request
+    if (title !== undefined) task.title = title;
+    if (description !== undefined) task.description = description;
+    if (priority !== undefined) task.priority = priority;
+
+    // Explicitly check for undefined so 'false' can be passed through
+    if (completed !== undefined) {
+      task.completed = completed;
+    }
+
+    res.status(200).json({ message: "Task updated", task });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-
-  if (title) task.title = title;
-  if (description) task.description = description;
-  if (priority) task.priority = priority;
-  if (completed) task.completed = !task.completed;
-
-  res.status(200).json({ message: "Task updated successfully", task });
 };
 
 export const deleteTask = (req, res) => {
-  const { id } = req.params;
-  tasks = tasks.filter((task) => task.id !== parseInt(id, 10));
-  res.status(200).json({ message: "Task deleted successfully" });
+  try {
+    const { id } = req.params;
+    tasks = tasks.filter((task) => task.id !== parseInt(id, 10));
+    res.status(200).json({ message: "Task deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
